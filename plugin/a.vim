@@ -435,7 +435,7 @@ endfunction
 function! AlternateFile(splitWindow, ...)
   let extension   = DetermineExtension(expand("%:p"))
   let baseName    = substitute(expand("%:t"), "\." . extension . '$', "", "")
-  let currentPath = expand("%:p:h")
+  let currentPath = expand("%:h")
 
   if (a:0 != 0)
      let newFullname = currentPath . "/" .  baseName . "." . a:1
@@ -494,7 +494,7 @@ endfunction
 " Author   : Michael Sharpe (feline@irendi.com) www.irendi.com
 function! AlternateOpenFileUnderCursor(splitWindow,...)
    let cursorFile = (a:0 > 0) ? a:1 : expand("<cfile>") 
-   let currentPath = expand("%:p:h")
+   let currentPath = expand("%:h")
    let openCount = 1
 
    let fileName = <SID>FindFileInSearchPathEx(cursorFile, g:alternateSearchPath, currentPath, openCount)
@@ -648,27 +648,27 @@ function! <SID>BufferOrFileExists(fileName)
    let lastBuffer = bufnr("$")
    let i = 1
    while i <= lastBuffer
-     if <SID>EqualFilePaths(expand("#".i.":p"), a:fileName)
+     if <SID>EqualFilePaths(expand("%".i), a:fileName)
        let result = 2
        break
      endif
      let i = i + 1
    endwhile
 
-   if (!result) 
-      let bufName = fnamemodify(a:fileName,":t")
-      let memBufName = bufname(bufName)
-      if (memBufName != "")
-         let memBufBasename = fnamemodify(memBufName, ":t")
-         if (bufName == memBufBasename)
-            let result = 2
-         endif
-      endif
+   "if (!result) 
+      "let bufName = fnamemodify(a:fileName,":t")
+      "let memBufName = bufname(bufName)
+      "if (memBufName != "")
+         "let memBufBasename = fnamemodify(memBufName, ":t")
+         "if (bufName == memBufBasename)
+            "let result = 2
+         "endif
+      "endif
 
-      if (!result)
-         let result  = bufexists(bufName) || bufexists(a:fileName) || filereadable(a:fileName)
-      endif
-   endif
+      "if (!result)
+         "let result  = bufexists(bufName) || bufexists(a:fileName) || filereadable(a:fileName)
+      "endif
+   "endif
 
    if (!result)
       let result = filereadable(a:fileName)
@@ -713,18 +713,19 @@ function! <SID>FindOrCreateBuffer(fileName, doSplit, findSimilar)
 
      if (bufNr == -1)
         let bufName = bufname(a:fileName)
-        let bufFilename = fnamemodify(a:fileName,":t")
+        "let bufFilename = fnamemodify(a:fileName,":t")
+        let bufFilename = a:fileName
 
         if (bufName == "")
            let bufName = bufname(bufFilename)
         endif
 
-        if (bufName != "")
-           let tail = fnamemodify(bufName, ":t")
-           if (tail != bufFilename)
-              let bufName = ""
-           endif
-        endif
+        "if (bufName != "")
+           "let tail = fnamemodify(bufName, ":t")
+           "if (tail != bufFilename)
+              "let bufName = ""
+           "endif
+        "endif
         if (bufName != "")
            let bufNr = bufnr(bufName)
            let FILENAME = bufName
