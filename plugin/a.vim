@@ -649,30 +649,16 @@ function! <SID>BufferOrFileExists(fileName)
    let i = 1
    while i <= lastBuffer
      if <SID>EqualFilePaths(expand("%".i), a:fileName)
-       let result = 2
+       let result = 1
        break
      endif
      let i = i + 1
    endwhile
 
-   "if (!result)
-      "let bufName = fnamemodify(a:fileName,":t")
-      "let memBufName = bufname(bufName)
-      "if (memBufName != "")
-         "let memBufBasename = fnamemodify(memBufName, ":t")
-         "if (bufName == memBufBasename)
-            "let result = 2
-         "endif
-      "endif
-
-      "if (!result)
-         "let result  = bufexists(bufName) || bufexists(a:fileName) || filereadable(a:fileName)
-      "endif
-   "endif
-
    if (!result)
-      let result = filereadable(a:fileName)
+      let result = bufexists(a:fileName) || filereadable(a:fileName)
    endif
+
    return result
 endfunction
 
