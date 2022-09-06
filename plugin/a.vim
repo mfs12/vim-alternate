@@ -643,23 +643,7 @@ comm! -nargs=? -bang AN call NextAlternate("<bang>")
 " History  : Updated code to handle buffernames using just the
 "            filename and not the path.
 function! <SID>BufferOrFileExists(fileName)
-   let result = 0
-
-   let lastBuffer = bufnr("$")
-   let i = 1
-   while i <= lastBuffer
-     if <SID>EqualFilePaths(expand("%".i), a:fileName)
-       let result = 1
-       break
-     endif
-     let i = i + 1
-   endwhile
-
-   if (!result)
-      let result = bufexists(a:fileName) || filereadable(a:fileName)
-   endif
-
-   return result
+      return bufexists(a:fileName) || filereadable(a:fileName)
 endfunction
 
 " Function : FindOrCreateBuffer (PRIVATE)
