@@ -683,19 +683,7 @@ function! <SID>FindOrCreateBuffer(fileName, doSplit, findSimilar)
 
      if (bufNr == -1)
         let bufName = bufname(a:fileName)
-        "let bufFilename = fnamemodify(a:fileName,":t")
-        let bufFilename = a:fileName
 
-        if (bufName == "")
-           let bufName = bufname(bufFilename)
-        endif
-
-        "if (bufName != "")
-           "let tail = fnamemodify(bufName, ":t")
-           "if (tail != bufFilename)
-              "let bufName = ""
-           "endif
-        "endif
         if (bufName != "")
            let bufNr = bufnr(bufName)
            let FILENAME = bufName
