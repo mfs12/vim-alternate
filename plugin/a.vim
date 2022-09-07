@@ -643,7 +643,15 @@ comm! -nargs=? -bang AN call NextAlternate("<bang>")
 " History  : Updated code to handle buffernames using just the
 "            filename and not the path.
 function! <SID>BufferOrFileExists(fileName)
-  return bufexists(a:fileName) || filereadable(a:fileName)
+  if (bufexists(a:fileName))
+     return 2
+  endif
+
+  if (filereadable(a:fileName))
+     return 1
+  endif
+
+  return 0
 endfunction
 
 " Function : FindOrCreateBuffer (PRIVATE)
